@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mosquito Game</title>
+  </head>
+  <style>
+    .playground {
+      background-color: antiquewhite;
+      position: relative;
+      width: 600px;
+      height: 600px;
+    }
+
+    #Mosquito {
+      position: absolute;
+      width: 100px;
+    }
+
+    .title-box {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  </style>
+  <body>
+    <div class="title-box">
+      <h1 id="gameStatus"></h1>
+      <span id="secondsremaining"
+        >Seconds remaining: <spna id="remaining"> </spna>
+      </span>
+    </div>
+    <h3><span> hits </span><span id="counter"></span></h3>
+    <div class="playground">
+      <img id="Mosquito" onclick="hit()" src="./mosquito.png" alt="mosquito" />
+    </div>
+    <button onclick="startGame()">Start Game</button>
+
+    <script>
+      let counter = 0;
+      let seconds = 15;
+      let gameStarted = false;
+      document.getElementById("remaining").innerText = 0;
+      function startGame() {
+        document.getElementById("gameStatus").innerText = "Game Started";
+        let secondsRemaining = document.getElementById("secondsremaining");
+        secondsRemaining.style.paddingLeft = 20 + "px";
+        gameStarted = true;
+        let mosquito = document.getElementById("Mosquito");
+        let time = setInterval(() => {
+          let i = Math.floor(Math.random() * 500) + 1;
+          let j = Math.floor(Math.random() * 500) + 1;
+          mosquito.style.right = i + `px`;
+          mosquito.style.top = j + `px`;
+        }, 2000);
+
+        setTimeout(() => {
+          gameStarted = false;
+
+          clearTimeout(time);
+          document.getElementById("gameStatus").innerText = "Game Ends";
+        }, 30000);
+      }
+
+      function hit() {
+        if (gameStarted) {
+          counter++;
+          document.getElementById("counter").innerText = counter;
+        }
+      }
+    </script>
+  </body>
+</html>
