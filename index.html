@@ -1,92 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mosquito Game</title>
-  </head>
-  <style>
-    .playground {
-      background-color: antiquewhite;
-      position: relative;
-      width: 500px;
-      height: 500px;
-    }
 
-    #Mosquito {
-      position: absolute;
-      width: 80px;
-    }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mosquito Game</title>
+</head>
+<style>
+  body {
+    /* background-color: #313131; */
+    background-image: url('https://st.depositphotos.com/2876063/3550/v/450/depositphotos_35504345-stock-illustration-abstract-dark-red-background-texture.jpg');
+    background-size: cover;
+    color: #fff;
+  }
 
-    .title-box {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
+  .playground {
+    background-color: antiquewhite;
+    position: relative;
+    width: 500px;
+    height: 500px;
+    border-radius: 5px;
+    ;
+  }
 
-    .main-container {
-      display: grid;
-      place-items: center;
-    }
-    .btn {
-      border-radius: 5px;
-      padding:5px 10px;
-      background-color: green;
-      color:white;
-      margin-top:5px;
-    }
+  #Mosquito {
+    position: absolute;
+    width: 80px;
+  }
 
-  </style>
-  <body class="main-container" >
-    <div class="title-box">
-      <h1 id="gameStatus"></h1>
-      <span id="secondsremaining"
-        >Seconds remaining: <spna id="remaining"> </spna>
-      </span>
-    </div>
-    <h3><span> hits </span><span id="counter"></span></h3>
-    <div class="playground">
-      <img id="Mosquito" onclick="hit()" src="./mosquito.png" alt="mosquito" />
-    </div>
-    <button  class="btn" onclick="startGame()">Start Game</button>
+  .title-box {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+  }
 
-    <script>
-      let counter = 0;
-      let seconds = 15;
-      let gameStarted = false;
-      document.getElementById("remaining").innerText = 0;
-      function startGame() {
-        document.getElementById("gameStatus").innerText = "Game Started";
-        let secondsRemaining = document.getElementById("secondsremaining");
-        secondsRemaining.style.paddingLeft = 20 + "px";
-        gameStarted = true;
-        
-        let mosquito = document.getElementById("Mosquito");
-        let time = setInterval(() => {
-          if(seconds>0 ) {
-            let secondsRemaining = document.getElementById("remaining").innerText = seconds;
-             seconds--
-          }
-          let i = Math.floor(Math.random() * 450) + 1;
-          let j = Math.floor(Math.random() * 450) + 1;
-          mosquito.style.right = i + `px`;
-          mosquito.style.top = j + `px`;
-        }, 2000);
+  .main-container {
+    display: grid;
+    place-items: center;
+  }
 
-        setTimeout(() => {
+  #secondsremaining {
+    text-align: center;
+  }
+
+
+  .btn {
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: green;
+    color: white;
+    margin-top: 30px;
+    border: none;
+  }
+</style>
+
+<body class="main-container">
+  <div class="title-box">
+    <h1 id="gameStatus"></h1>
+    <span id="secondsremaining">Seconds remaining: <span id="remaining"></span></span>
+  </div>
+  <h3><span> Hits </span><span id="counter"></span></h3>
+  <div class="playground">
+    <img id="Mosquito" onclick="hit()" src="./mosquito.png" alt="mosquito" />
+  </div>
+  <button class="btn" onclick="startGame()">Start Game</button>
+
+  <script>
+    let counter = 0;
+    let seconds = 15; // Total game duration
+    let gameStarted = false;
+    let intervalId; // Store interval ID for clearing later
+
+    document.getElementById("remaining").innerText = seconds;
+
+    function startGame() {
+      document.getElementById("gameStatus").innerText = "Game Started";
+      gameStarted = true;
+
+      intervalId = setInterval(() => {
+        if (seconds >= 0) { // Check if seconds is 0 or greater
+          // Update remaining seconds directly within this interval function
+          document.getElementById("remaining").innerText = seconds;
+          seconds--;
+        } else {
+          // Game ends
+          clearInterval(intervalId);
           gameStarted = false;
-
-          clearTimeout(time);
           document.getElementById("gameStatus").innerText = "Game Ends";
-        }, 30000);
-      }
-
-      function hit() {
-        if (gameStarted) {
-          counter++;
-          document.getElementById("counter").innerText = counter;
         }
+
+        // Randomly change mosquito position within the interval function
+        let mosquito = document.getElementById("Mosquito");
+        let i = Math.floor(Math.random() * 450) + 1;
+        let j = Math.floor(Math.random() * 450) + 1;
+        mosquito.style.right = i + `px`;
+        mosquito.style.top = j + `px`;
+      }, 1000); // Update every 2 seconds
+    }
+
+    function hit() {
+      if (gameStarted) {
+        counter++;
+        document.getElementById("counter").innerText = counter;
       }
-    </script>
-  </body>
+    }
+  </script>
+</body>
+
 </html>
